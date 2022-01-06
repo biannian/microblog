@@ -1,0 +1,8 @@
+
+spring:
+  datasource:
+    name: microblog
+    url: jdbc:mysql://121.5.222.148:3306/mricroblog
+    username: root
+    password: K1panguangke
+    driver-class-name: com.mysql.jdbc.Driver
