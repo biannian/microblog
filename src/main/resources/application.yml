@@ -1,8 +1,13 @@
-
+server:
+  port: 8083
 spring:
   datasource:
     name: microblog
-    url: jdbc:mysql://121.5.222.148:3306/mricroblog
+    url: jdbc:mysql://121.5.222.148:3306/microblog
     username: root
     password: K1panguangke
     driver-class-name: com.mysql.jdbc.Driver
+
+mybatis:
+  mapper-locations: classpath:mapping/*.xml
+  type-aliases-package: com.biannian.microblog.Entity
