@@ -1,7 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.biannian.microblog.Dao.BlogMapper">
-    <select id="getBlogInfo" resultType="com.biannian.microblog.Entity.BlogInfo">
-       SELECT * FROM BLOGINFO ORDER BY BLOGCREATTIME DESC LIMIT 0,10
+    <resultMap id="blogsMap" type="com.biannian.microblog.Entity.BlogInfo">
+        <id column="blogId" property="blogId"/>
+        <result column="blogInfo" property="blogInfo"/>
+        <result column="blogAuthorId" property="blogAuthorId"/>
+        <result column="blogTime" property="blogTime"/>
+        <result column="blogLocation" property="blogLocation"/>
+        <result column="repeatCount" property="repeatCount"/>
+        <result column="messageCount" property="messageCount"/>
+        <result column="likeCount" property="likeCount"/>
+        <result column="blogCreatTime" property="blogCreatTime"/>
+        <collection property="blogImg" ofType="com.biannian.microblog.Entity.BlogImg">
+            <id column="imgId" property="imgId"/>
+            <result column="imgUrl" property="imgUrl"/>
+            <result column="blogId" property="blogId"/>
+        </collection>
+    </resultMap>
+    <select id="getBlogInfo" resultMap="blogsMap">
+SELECT
+	*
+FROM
+	BLOGINFO
+	LEFT JOIN IMGURLS ON BLOGINFO.BLOGID = IMGURLS.BLOGID
+ORDER BY
+	BLOGCREATTIME DESC
+	LIMIT 0,
+	10
     </select>
 </mapper>

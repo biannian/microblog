@@ -3,6 +3,7 @@ package com.biannian.microblog.Entity;
 import lombok.Data;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 public class BlogInfo {
@@ -21,7 +22,7 @@ public class BlogInfo {
     /*
     微博图片地址
      */
-    private String blogImg;
+    private List<BlogImg> blogImg;
     /*
     微博时间
      */
