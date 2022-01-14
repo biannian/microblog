@@ -1,13 +1,13 @@
 package com.biannian.microblog.Controller;
 
-import com.biannian.microblog.Entity.BlogInfo;
 import com.biannian.microblog.Model.Result;
 import com.biannian.microblog.Service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 @RequestMapping({"/Blog"})
 @RestController
 public class BlogController {
@@ -17,5 +17,9 @@ public class BlogController {
     @RequestMapping({"/getBlogInfo"})
     public Result<?> getBlogInfo() {
         return Result.success(service.getBlogInfo());
+    }
+    @RequestMapping({"/getBlogDetail"})
+    public Result<?> getBlogDetail(String blogId) {
+        return Result.success(service.getBlogDetail(blogId));
     }
 }

@@ -3,6 +3,7 @@ package com.biannian.microblog.Entity;
 import lombok.Data;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -26,7 +27,7 @@ public class BlogInfo {
     /*
     微博时间
      */
-    private Timestamp blogTime;
+    private Date blogTime;
     /*
     微博地址
      */
@@ -46,5 +47,9 @@ public class BlogInfo {
     /*
     微博创建时间
      */
-    private Timestamp blogCreatTime;
+    private Date blogCreatTime;
+    /*
+     *该用户是否点赞
+     */
+    private boolean  liked;
 }

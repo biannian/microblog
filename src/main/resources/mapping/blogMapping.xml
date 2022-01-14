@@ -11,6 +11,7 @@
         <result column="messageCount" property="messageCount"/>
         <result column="likeCount" property="likeCount"/>
         <result column="blogCreatTime" property="blogCreatTime"/>
+        <result column="isLike" property="liked"/>
         <collection property="blogImg" ofType="com.biannian.microblog.Entity.BlogImg">
             <id column="imgId" property="imgId"/>
             <result column="imgUrl" property="imgUrl"/>
@@ -19,13 +20,20 @@
     </resultMap>
     <select id="getBlogInfo" resultMap="blogsMap">
 SELECT
-	*
+	*,(CASE WHEN EXISTS(SELECT KE.* FROM BLOGLIKE KE WHERE B.BLOGID =KE.LIKEBLOGID) THEN 'TRUE' ELSE 'FALSE' END) ISLIKE
 FROM
-	BLOGINFO
-	LEFT JOIN IMGURLS ON BLOGINFO.BLOGID = IMGURLS.BLOGID
+	(SELECT * FROM BLOGINFO LIMIT 0,10)  B
+	LEFT JOIN IMGURLS ON B.BLOGID = IMGURLS.BLOGID
 ORDER BY
-	BLOGCREATTIME DESC
-	LIMIT 0,
-	10
+	B.BLOGCREATTIME DESC
+    </select>
+    <select id="getBlogDetail" resultMap="blogsMap">
+SELECT * FROM
+   BLOGINFO
+	LEFT JOIN IMGURLS
+		ON BLOGINFO.BLOGID = IMGURLS.BLOGID
+	LEFT JOIN `COMMENT`
+	ON BLOGINFO.BLOGID = `COMMENT`.BLOGID
+	WHERE BLOGINFO.BLOGID = #{blogId}
     </select>
 </mapper>
