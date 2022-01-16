@@ -6,6 +6,9 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * 微博信息
+ */
 @Data
 public class BlogInfo {
     /*
@@ -52,4 +55,16 @@ public class BlogInfo {
      *该用户是否点赞
      */
     private boolean  liked;
+    /*
+    评论
+     */
+    private List<Comment> comment;
+    /*
+    用户头像信息
+     */
+    private User user;
+    /*
+    来源
+     */
+    private String blogFrom;
 }

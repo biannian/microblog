@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.biannian.microblog.Dao.BlogMapper">
+
     <resultMap id="blogsMap" type="com.biannian.microblog.Entity.BlogInfo">
         <id column="blogId" property="blogId"/>
         <result column="blogInfo" property="blogInfo"/>
@@ -12,28 +13,103 @@
         <result column="likeCount" property="likeCount"/>
         <result column="blogCreatTime" property="blogCreatTime"/>
         <result column="isLike" property="liked"/>
+        <result column="blogFrom" property="blogFrom"/>
         <collection property="blogImg" ofType="com.biannian.microblog.Entity.BlogImg">
             <id column="imgId" property="imgId"/>
             <result column="imgUrl" property="imgUrl"/>
             <result column="blogId" property="blogId"/>
         </collection>
+        <collection property="user" ofType="com.biannian.microblog.Entity.User">
+            <id column="userId" property="userId"/>
+            <result column="userName" property="userName"/>
+            <result column="userImgUrl" property="userImgUrl"/>
+            <result column="likeType" property="likeType"/>
+        </collection>
+    </resultMap>
+    <resultMap id="blogDetail" type="com.biannian.microblog.Entity.BlogInfo">
+        <id column="blogId" property="blogId"/>
+        <result column="blogInfo" property="blogInfo"/>
+        <result column="blogAuthorId" property="blogAuthorId"/>
+        <result column="blogTime" property="blogTime"/>
+        <result column="blogLocation" property="blogLocation"/>
+        <result column="repeatCount" property="repeatCount"/>
+        <result column="messageCount" property="messageCount"/>
+        <result column="likeCount" property="likeCount"/>
+        <result column="blogCreatTime" property="blogCreatTime"/>
+        <result column="isLike" property="liked"/>
+        <result column="blogFrom" property="blogFrom"/>
+        <collection property="blogImg" ofType="com.biannian.microblog.Entity.BlogImg">
+            <id column="imgId" property="imgId"/>
+            <result column="imgUrl" property="imgUrl"/>
+            <result column="blogId" property="blogId"/>
+        </collection>
+        <collection property="comment" ofType="com.biannian.microblog.Entity.Comment">
+            <id column="commentId" property="commentId"/>
+            <result column="cmUserId" property="userId"/>
+            <result column="commentInfo" property="commentInfo"/>
+            <result column="commentTime" property="commentTime"/>
+            <result column="likeCount" property="likeCount"/>
+            <result column="msgCount" property="msgCount"/>
+            <result column="higherId" property="higherId"/>
+        <collection property="user" ofType="com.biannian.microblog.Entity.User">
+            <id column="cmuruserid" property="userId"/>
+            <result column="cmurusername" property="userName"/>
+            <result column="cmuruserimgurl" property="userImgUrl"/>
+            <result column="cmurliketype" property="likeType"/>
+        </collection>
+        </collection>
+        <collection property="user" ofType="com.biannian.microblog.Entity.User">
+            <id column="userId" property="userId"/>
+            <result column="userName" property="userName"/>
+            <result column="userImgUrl" property="userImgUrl"/>
+            <result column="likeType" property="likeType"/>
+        </collection>
     </resultMap>
     <select id="getBlogInfo" resultMap="blogsMap">
 SELECT
-	*,(CASE WHEN EXISTS(SELECT KE.* FROM BLOGLIKE KE WHERE B.BLOGID =KE.LIKEBLOGID) THEN 'TRUE' ELSE 'FALSE' END) ISLIKE
+	B.BLOGID,B.BLOGINFO,B.BLOGAUTHORID,B.BLOGTIME,B.BLOGLOCATION,B.BLOGCREATTIME,B.BLOGFROM,IMG.IMGID,IMG.IMGURL,UR.USERID,
+	UR.USERNAME,UR.USERIMGURL,UR.LIKETYPE
+	,(CASE WHEN EXISTS(SELECT KE.* FROM BLOGLIKE KE WHERE B.BLOGID =KE.LIKEBLOGID) THEN 'TRUE' ELSE 'FALSE' END) ISLIKE,
+	( SELECT COUNT(1) FROM `COMMENT` WHERE `COMMENT`.BLOGID =  B.BLOGID ) MESSAGECOUNT,
+		( SELECT COUNT(1) FROM BLOGLIKE WHERE BLOGLIKE.LIKEBLOGID =  B.BLOGID ) LIKECOUNT
 FROM
 	(SELECT * FROM BLOGINFO LIMIT 0,10)  B
-	LEFT JOIN IMGURLS ON B.BLOGID = IMGURLS.BLOGID
+	LEFT JOIN IMGURLS IMG ON B.BLOGID = IMG.BLOGID
+	JOIN `USER` UR ON UR.USERID = B.BLOGAUTHORID
 ORDER BY
 	B.BLOGCREATTIME DESC
     </select>
-    <select id="getBlogDetail" resultMap="blogsMap">
-SELECT * FROM
-   BLOGINFO
-	LEFT JOIN IMGURLS
-		ON BLOGINFO.BLOGID = IMGURLS.BLOGID
-	LEFT JOIN `COMMENT`
-	ON BLOGINFO.BLOGID = `COMMENT`.BLOGID
-	WHERE BLOGINFO.BLOGID = #{blogId}
+    <select id="getBlogDetail" resultMap="blogDetail">
+SELECT
+	B.BLOGID,
+	B.BLOGINFO,
+	B.BLOGAUTHORID,
+	B.BLOGTIME,
+	B.BLOGLOCATION,
+	B.BLOGCREATTIME,
+	B.BLOGFROM,
+	IMG.IMGID,
+	IMG.IMGURL,
+	UR.USERID,
+	UR.USERNAME,
+	UR.USERIMGURL,
+	UR.LIKETYPE,
+	( CASE  WHEN EXISTS ( SELECT KE.* FROM BLOGLIKE KE WHERE B.BLOGID = KE.LIKEBLOGID ) THEN 'TRUE' ELSE 'FALSE'  END  ) ISLIKE,
+	CM.USERID CMUSERID,
+	CM.COMMENTID,
+	CM.COMMENTINFO,
+	CM.COMMENTTIME,
+	CM.HIGHERID,
+	CMUR.USERID CMURUSERID,
+	CMUR.USERNAME CMURUSERNAME,
+	CMUR.USERIMGURL CMURUSERIMGURL,
+	CMUR.LIKETYPE CMURLIKETYPE
+	FROM
+		BLOGINFO B
+	LEFT JOIN IMGURLS IMG ON B.BLOGID = IMG.BLOGID
+	LEFT JOIN `COMMENT` CM ON B.BLOGID = CM.BLOGID
+	LEFT JOIN `USER` UR ON UR.USERID = B.BLOGAUTHORID
+	LEFT JOIN `USER` CMUR ON CM.USERID = CMUR.USERID
+	WHERE B.BLOGID = #{blogId}
     </select>
 </mapper>

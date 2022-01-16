@@ -20,13 +20,13 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public List<BlogInfo> getBlogInfo () {
-        List<BlogInfo> blogInfos = mapper.getBlogInfo();
-        return blogInfos;
+        return mapper.getBlogInfo();
     }
 
     @Override
     public List<BlogInfo> getBlogDetail(String blogId) {
-        List<BlogInfo> a = mapper.getBlogDetail(blogId);
-        return a;
+        List<BlogInfo> blogInfos =  mapper.getBlogDetail(blogId);
+
+        return mapper.getBlogDetail(blogId);
     }
 }
