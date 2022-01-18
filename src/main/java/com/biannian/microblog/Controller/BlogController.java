@@ -4,10 +4,8 @@ import com.biannian.microblog.Model.Result;
 import com.biannian.microblog.Service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 
 @RequestMapping({"/Blog"})
 @RestController

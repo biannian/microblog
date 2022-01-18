@@ -24,4 +24,8 @@ public class Comment {
   用户头像信息
    */
     private User user;
+    /*
+    是否点赞
+     */
+    private boolean isCommentLike;
 }
