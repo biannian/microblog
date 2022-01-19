@@ -14,6 +14,10 @@ public class Comment {
     private int userId;
     private String commentInfo;
     private Date commentTime;
+    /*
+    评论时间差
+     */
+    private String commentTimeDiffer;
     private int likeCount;
     private int msgCount;
     /*

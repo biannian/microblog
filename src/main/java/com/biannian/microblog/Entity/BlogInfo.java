@@ -32,6 +32,10 @@ public class BlogInfo {
      */
     private Date blogTime;
     /*
+     *时间差
+     */
+    private String blogTimeDiffer ;
+    /*
     微博地址
      */
     private String blogLocation;
@@ -51,6 +55,7 @@ public class BlogInfo {
     微博创建时间
      */
     private Date blogCreatTime;
+
     /*
      *该用户是否点赞
      */
