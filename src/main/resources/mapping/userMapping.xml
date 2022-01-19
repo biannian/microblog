@@ -4,4 +4,7 @@
     <select id="getUserInfo" resultType="com.biannian.microblog.Entity.User">
         select * from user where userId = #{userId}
     </select>
+    <select id="login" resultType="com.biannian.microblog.Entity.User">
+       select * from account where account = #{account} and password=#{password}
+    </select>
 </mapper>

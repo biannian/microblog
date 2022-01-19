@@ -32,7 +32,7 @@ public class UserController {
         if (users.size() != 1 ){
             return Result.fail(-1);
         }
-        return Result.success(0);
+        return Result.success(users.get(0).getUserId());
     }
 
     @RequestMapping({"/verifyCode"})
