@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.biannian.microblog.Dao.UserMapper">
-    <select id="getUserInfo" resultType="com.biannian.microblog.Entity.User">
-        select * from user where userId = #{userId}
+    <resultMap id="loginMap" type="com.biannian.microblog.Entity.User">
+        <id property="accountId" column="accountId"/>
+        <result property="userId" column="userId"/>
+    </resultMap>
+    <resultMap id="getUserInfoMap" type="com.biannian.microblog.Entity.User">
+        <id property="accountId" column="accountId"/>
+        <result property="userId" column="userId"/>
+        <result property="userName" column="userName"/>
+        <result property="userImgUrl" column="userImgUrl"/>
+        <result property="likeType" column="likeType"/>
+        <result property="account" column="account"/>
+    </resultMap>
+    <select id="getUserInfo" resultMap="getUserInfoMap">
+       SELECT * FROM `account` acc LEFT JOIN `user` us ON acc.accountId = us.accountId where us.userId = #{userId}
     </select>
-    <select id="login" resultType="com.biannian.microblog.Entity.User">
-       select * from account where account = #{account} and password=#{password}
+    <select id="login" resultMap="loginMap">
+       SELECT acc.accountId,us.userId FROM `account` acc LEFT JOIN `user` us ON acc.accountId = us.accountId  WHERE acc.account = #{account}  AND acc.`password` = #{password}
     </select>
 </mapper>

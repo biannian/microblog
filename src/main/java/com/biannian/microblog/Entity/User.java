@@ -23,4 +23,6 @@ public class User {
      */
     private String likeType;
 
+    private String account;
+
 }
