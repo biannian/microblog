@@ -54,7 +54,7 @@ public class BlogInfo {
     /*
     微博创建时间
      */
-    private Date blogCreatTime;
+    private Date blogCreateTime;
 
     /*
      *该用户是否点赞

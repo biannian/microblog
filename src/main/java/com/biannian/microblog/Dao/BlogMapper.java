@@ -10,4 +10,6 @@ public interface BlogMapper {
     List<BlogInfo> getBlogInfo();
 
     List<BlogInfo> getBlogDetail(String blogId);
+
+    int uploadBlog(BlogInfo blogInfo);
 }

@@ -1,6 +1,7 @@
 package com.biannian.microblog.Service.ServiceImpl;
 
 import com.biannian.microblog.Dao.BlogMapper;
+import com.biannian.microblog.Entity.BlogDraft;
 import com.biannian.microblog.Entity.BlogImg;
 import com.biannian.microblog.Entity.BlogInfo;
 import com.biannian.microblog.Entity.Comment;
@@ -30,6 +31,23 @@ public class BlogServiceImpl implements BlogService {
         List<BlogInfo> blogInfos = mapper.getBlogDetail(blogId);
         this.sortList(blogInfos);
         return blogInfos;
+    }
+
+    @Override
+    public int likeBlog(String blogId, String userId) {
+        return 0;
+    }
+
+    @Override
+    public int uploadBlog(BlogInfo blogInfo) {
+        blogInfo.setBlogTime(new Date());
+        blogInfo.setBlogCreateTime(new Date());
+        return mapper.uploadBlog(blogInfo);
+    }
+
+    @Override
+    public int saveBlogDraft(BlogDraft blogDraft) {
+        return 0;
     }
 
     /**

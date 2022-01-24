@@ -11,7 +11,7 @@
         <result column="repeatCount" property="repeatCount"/>
         <result column="messageCount" property="messageCount"/>
         <result column="likeCount" property="likeCount"/>
-        <result column="blogCreatTime" property="blogCreatTime"/>
+        <result column="blogCreateTime" property="blogCreateTime"/>
         <result column="isLike" property="liked"/>
         <result column="blogFrom" property="blogFrom"/>
         <collection property="blogImg" ofType="com.biannian.microblog.Entity.BlogImg">
@@ -35,7 +35,7 @@
         <result column="repeatCount" property="repeatCount"/>
         <result column="messageCount" property="messageCount"/>
         <result column="likeCount" property="likeCount"/>
-        <result column="blogCreatTime" property="blogCreatTime"/>
+        <result column="blogCreateTime" property="blogCreateTime"/>
         <result column="isLike" property="liked"/>
         <result column="blogFrom" property="blogFrom"/>
         <collection property="blogImg" ofType="com.biannian.microblog.Entity.BlogImg">
@@ -51,12 +51,12 @@
             <result column="commentLikeCount" property="likeCount"/>
             <result column="msgCount" property="msgCount"/>
             <result column="higherId" property="higherId"/>
-        <collection property="user" ofType="com.biannian.microblog.Entity.User">
-            <id column="cmuruserid" property="userId"/>
-            <result column="cmurusername" property="userName"/>
-            <result column="cmuruserimgurl" property="userImgUrl"/>
-            <result column="cmurliketype" property="likeType"/>
-        </collection>
+            <collection property="user" ofType="com.biannian.microblog.Entity.User">
+                <id column="cmuruserid" property="userId"/>
+                <result column="cmurusername" property="userName"/>
+                <result column="cmuruserimgurl" property="userImgUrl"/>
+                <result column="cmurliketype" property="likeType"/>
+            </collection>
         </collection>
         <collection property="user" ofType="com.biannian.microblog.Entity.User">
             <id column="userId" property="userId"/>
@@ -65,9 +65,14 @@
             <result column="likeType" property="likeType"/>
         </collection>
     </resultMap>
+    <insert id="uploadBlog" parameterType="com.biannian.microblog.Entity.BlogInfo">
+INSERT INTO bloginfo (  blogInfo, blogAuthorId, blogTime,blogLocation,blogCreateTime,blogFrom )
+VALUES
+	( #{blogInfo},  #{blogAuthorId},  #{blogTime}, #{blogLocation},#{blogCreateTime},#{blogFrom})
+    </insert>
     <select id="getBlogInfo" resultMap="blogsMap">
 SELECT
-	B.BLOGID,B.BLOGINFO,B.BLOGAUTHORID,B.BLOGTIME,B.BLOGLOCATION,B.BLOGCREATTIME,B.BLOGFROM,IMG.IMGID,IMG.IMGURL,UR.USERID,
+	B.BLOGID,B.BLOGINFO,B.BLOGAUTHORID,B.BLOGTIME,B.BLOGLOCATION,B.BLOGCREATETIME,B.BLOGFROM,IMG.IMGID,IMG.IMGURL,UR.USERID,
 	UR.USERNAME,UR.USERIMGURL,UR.LIKETYPE
 	,(CASE WHEN EXISTS(SELECT KE.* FROM BLOGLIKE KE WHERE B.BLOGID =KE.LIKEBLOGID) THEN 'TRUE' ELSE 'FALSE' END) ISLIKE,
 	( SELECT COUNT(1) FROM `COMMENT` WHERE `COMMENT`.BLOGID =  B.BLOGID ) MESSAGECOUNT,
@@ -77,7 +82,7 @@ FROM
 	LEFT JOIN IMGURLS IMG ON B.BLOGID = IMG.BLOGID
 	JOIN `USER` UR ON UR.USERID = B.BLOGAUTHORID
 ORDER BY
-	B.BLOGCREATTIME DESC
+	B.BLOGCREATETIME DESC
     </select>
     <select id="getBlogDetail" resultMap="blogDetail">
 SELECT
@@ -86,7 +91,7 @@ SELECT
 	B.BLOGAUTHORID,
 	B.BLOGTIME,
 	B.BLOGLOCATION,
-	B.BLOGCREATTIME,
+	B.BLOGCREATETIME,
 	B.BLOGFROM,
 	B.LIKECOUNT,
 	( CASE WHEN EXISTS ( SELECT KE.* FROM BLOGLIKE KE WHERE B.BLOGID = KE.LIKEBLOGID ) THEN 'TRUE' ELSE 'FALSE' END ) ISLIKE,
