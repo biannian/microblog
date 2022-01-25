@@ -66,19 +66,34 @@
         </collection>
     </resultMap>
     <insert id="uploadBlog" parameterType="com.biannian.microblog.Entity.BlogInfo">
-INSERT INTO bloginfo (  blogInfo, blogAuthorId, blogTime,blogLocation,blogCreateTime,blogFrom )
-VALUES
-	( #{blogInfo},  #{blogAuthorId},  #{blogTime}, #{blogLocation},#{blogCreateTime},#{blogFrom})
+        <selectKey keyProperty="blogId" order="AFTER" resultType="java.lang.Integer">
+            select last_insert_id()
+        </selectKey>
+        INSERT INTO bloginfo ( blogInfo, blogAuthorId, blogTime,blogLocation,blogCreateTime,blogFrom )
+        VALUES
+        ( #{blogInfo}, #{blogAuthorId}, #{blogTime}, #{blogLocation},#{blogCreateTime},#{blogFrom})
     </insert>
+    <insert id="likeBlog">
+INSERT INTO `microblog`.`bloglike`(`likeBlogId`, `userId`, `createTime`) VALUES ( #{blogId},#{userId}, #{time});
+    </insert>
+    <insert id="addBlogImg" parameterType="java.util.List">
+        INSERT INTO `microblog`.`imgurls`(`imgUrl`, `blogId`) VALUES
+        <foreach collection="imgs" index="index" separator="," item="item" close=";">
+            (#{item.imgUrl} , #{blogId})
+        </foreach>
+    </insert>
+    <delete id="notLikeBlog">
+DELETE FROM bloglike WHERE likeBlogId =  #{blogId} AND userId= #{userId}
+    </delete>
     <select id="getBlogInfo" resultMap="blogsMap">
 SELECT
 	B.BLOGID,B.BLOGINFO,B.BLOGAUTHORID,B.BLOGTIME,B.BLOGLOCATION,B.BLOGCREATETIME,B.BLOGFROM,IMG.IMGID,IMG.IMGURL,UR.USERID,
 	UR.USERNAME,UR.USERIMGURL,UR.LIKETYPE
 	,(CASE WHEN EXISTS(SELECT KE.* FROM BLOGLIKE KE WHERE B.BLOGID =KE.LIKEBLOGID) THEN 'TRUE' ELSE 'FALSE' END) ISLIKE,
 	( SELECT COUNT(1) FROM `COMMENT` WHERE `COMMENT`.BLOGID =  B.BLOGID ) MESSAGECOUNT,
-		B.LIKECOUNT
+	( SELECT COUNT(1) FROM bloglike WHERE bloglike.likeBlogId =  B.BLOGID ) LIKECOUNT
 FROM
-	(SELECT * FROM BLOGINFO LIMIT 0,10)  B
+	(SELECT * FROM BLOGINFO LIMIT 0,100)  B
 	LEFT JOIN IMGURLS IMG ON B.BLOGID = IMG.BLOGID
 	JOIN `USER` UR ON UR.USERID = B.BLOGAUTHORID
 ORDER BY

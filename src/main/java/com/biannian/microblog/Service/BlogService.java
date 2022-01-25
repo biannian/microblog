@@ -15,4 +15,6 @@ public interface BlogService {
     int uploadBlog(BlogInfo blogInfo);
 
     int saveBlogDraft(BlogDraft blogDraft);
+
+    int notLikeBlog(String blogId, String userId);
 }

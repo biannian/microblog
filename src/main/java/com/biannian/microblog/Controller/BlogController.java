@@ -52,6 +52,17 @@ public class BlogController {
     public Result<?> likeBlog(String blogId, String userId) {
         return Result.success(service.likeBlog(blogId, userId));
     }
+    /**
+     * 给微博取消点赞
+     *
+     * @param blogId
+     * @param userId
+     * @return
+     */
+    @RequestMapping({"/notLikeBlog"})
+    public Result<?> notLikeBlog(String blogId, String userId) {
+        return Result.success(service.notLikeBlog(blogId, userId));
+    }
 
     /**
      * 保存微博备份
@@ -72,6 +83,9 @@ public class BlogController {
      */
     @RequestMapping({"/uploadBlog"})
     public Result<?> uploadBlog( BlogInfo blogInfo) {
-        return Result.success(service.uploadBlog(blogInfo));
+        if (service.uploadBlog(blogInfo) == 1){
+            return Result.success();
+        }
+        return Result.fail();
     }
 }

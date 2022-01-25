@@ -35,14 +35,24 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public int likeBlog(String blogId, String userId) {
-        return 0;
+        return mapper.likeBlog(blogId, userId, new Date());
+    }
+
+    @Override
+    public int notLikeBlog(String blogId, String userId) {
+        return mapper.notLikeBlog(blogId, userId);
     }
 
     @Override
     public int uploadBlog(BlogInfo blogInfo) {
         blogInfo.setBlogTime(new Date());
         blogInfo.setBlogCreateTime(new Date());
-        return mapper.uploadBlog(blogInfo);
+        int result = mapper.uploadBlog(blogInfo);
+        if (result == 1 && null != blogInfo.getBlogImg()) {
+            List<BlogImg> imgs = blogInfo.getBlogImg();
+            mapper.addBlogImg(imgs, blogInfo.getBlogId());
+        }
+        return result;
     }
 
     @Override
@@ -91,7 +101,7 @@ public class BlogServiceImpl implements BlogService {
         if (24 * 60 * 60 > date && date > 60 * 60) {
             dateDiffer = date / (60 * 60) + "小时前";
         }
-        if ( date > 24 * 60 * 60) {
+        if (date > 24 * 60 * 60) {
             dateDiffer = sdf.format(time);
         }
         return dateDiffer;
