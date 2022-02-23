@@ -20,7 +20,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> login(String account, String password) {
-
         return mapper.login(account, password);
+    }
+
+    @Override
+    public User addWrongCount(String account) {
+        User user = mapper.getWrongCount(account);
+        mapper.addWrongCount(account, user.getWrongCount() + 1);
+        return user;
     }
 }

@@ -6,6 +6,7 @@ import com.biannian.microblog.Model.Result;
 import com.biannian.microblog.Service.UserService;
 import com.biannian.microblog.Utils.IVerifyCodeGen;
 import com.biannian.microblog.Utils.SimpleCharVerifyCodeGenImpl;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,10 +29,19 @@ public class UserController {
 
     @RequestMapping({"/login"})
     public Result<?> login(String account, String password) {
-        List<User> users = service.login(account,password);
-        if (users.size() != 1 ){
+        List<User> users = service.login(account, password);
+        if (users.size() != 1) {
+            User user = service.addWrongCount(account);
+            if (StringUtils.isNotEmpty(user.getAccount())) {
+                if (user.getWrongCount() >= 5) {
+                    //账户登录错误次数过多被禁用
+                    return Result.fail(-2);
+                }
+                return Result.fail(-3, String.valueOf(user.getWrongCount()));
+            }
             return Result.fail(-1);
         }
+
         return Result.success(users.get(0).getUserId());
     }
 

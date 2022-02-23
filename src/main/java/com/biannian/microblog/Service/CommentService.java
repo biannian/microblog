@@ -4,4 +4,6 @@ import com.biannian.microblog.Entity.Comment;
 
 public interface CommentService {
     int addComment(Comment comment);
+
+    int likeComment(Comment comment);
 }

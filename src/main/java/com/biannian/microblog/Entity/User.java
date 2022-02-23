@@ -24,5 +24,8 @@ public class User {
     private String likeType;
 
     private String account;
-
+    /**
+     * 账户登录错误次数
+     */
+    private  int wrongCount;
 }

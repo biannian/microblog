@@ -23,4 +23,13 @@ public class CommentController {
     public Result<?> addComment(Comment comment) {
         return Result.success(service.addComment(comment));
     }
+    /**
+     * 点赞
+     * @param comment
+     * @return
+     */
+    @RequestMapping({"/likeComment"})
+    public Result<?> likeComment(Comment comment) {
+        return Result.success(service.likeComment(comment));
+    }
 }

@@ -13,10 +13,16 @@
         <result property="likeType" column="likeType"/>
         <result property="account" column="account"/>
     </resultMap>
+    <insert id="addWrongCount">
+    UPDATE  `account` SET  `wrongCount` = #{wrongCount}  WHERE account  = #{account}
+    </insert>
     <select id="getUserInfo" resultMap="getUserInfoMap">
        SELECT * FROM `account` acc LEFT JOIN `user` us ON acc.accountId = us.accountId where us.userId = #{userId}
     </select>
     <select id="login" resultMap="loginMap">
-       SELECT acc.accountId,us.userId FROM `account` acc LEFT JOIN `user` us ON acc.accountId = us.accountId  WHERE acc.account = #{account}  AND acc.`password` = #{password}
+       SELECT acc.accountId,us.userId,acc.wrongCount FROM `account` acc LEFT JOIN `user` us ON acc.accountId = us.accountId  WHERE acc.account = #{account}  AND acc.`password` = #{password}
+    </select>
+    <select id="getWrongCount" resultType="com.biannian.microblog.Entity.User">
+           SELECT wrongCount,account FROM `account`  WHERE account = #{account}
     </select>
 </mapper>

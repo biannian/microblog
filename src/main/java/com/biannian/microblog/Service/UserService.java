@@ -8,4 +8,6 @@ public interface UserService {
     List<User> getUserInfo(String userId);
 
     List<User> login(String account, String password);
+
+    User addWrongCount(String account);
 }

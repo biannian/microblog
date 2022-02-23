@@ -5,4 +5,7 @@
 INSERT INTO `microblog`.`comment`(  `blogId`, `userId`, `commentInfo`, `commentTime`, `higherId`) VALUES
 ( #{blogId}, #{userId},  #{commentInfo}, #{commentTime},#{higherId})
     </insert>
+    <insert id="likeComment">
+INSERT INTO `microblog`.`commentlike` (  `commentId`, `userId`, `ceateTime`) VALUES (  #({commentId}), #{userId}, #{commentTime});
+    </insert>
 </mapper>

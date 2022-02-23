@@ -18,4 +18,10 @@ public class CommentServiceImpl implements CommentService {
         comment.setCommentTime(new Date());
         return mapper.addComment(comment);
     }
+
+    @Override
+    public int likeComment(Comment comment) {
+        comment.setCommentTime(new Date());
+        return mapper.likeComment(comment);
+    }
 }
