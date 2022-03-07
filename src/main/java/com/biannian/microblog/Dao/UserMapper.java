@@ -1,5 +1,7 @@
 package com.biannian.microblog.Dao;
 
+import com.biannian.microblog.Entity.EmailHistory;
+import com.biannian.microblog.Entity.GlanceHistroy;
 import com.biannian.microblog.Entity.User;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -14,4 +16,8 @@ public interface UserMapper {
     void addWrongCount(String account,int wrongCount);
 
     User getWrongCount(String account);
+
+    void saveEmailHistory(EmailHistory emailHistory);
+
+    void saveGlance(GlanceHistroy glanceHistroy);
 }

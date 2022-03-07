@@ -1,11 +1,15 @@
 package com.biannian.microblog.Controller;
 
+import com.biannian.microblog.Entity.EmailHistory;
+import com.biannian.microblog.Entity.GlanceHistroy;
 import com.biannian.microblog.Entity.User;
 import com.biannian.microblog.Entity.VerifyCode;
 import com.biannian.microblog.Model.Result;
 import com.biannian.microblog.Service.UserService;
 import com.biannian.microblog.Utils.IVerifyCodeGen;
+import com.biannian.microblog.Utils.RandomUtils;
 import com.biannian.microblog.Utils.SimpleCharVerifyCodeGenImpl;
+import com.biannian.microblog.Utils.mailUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 @RequestMapping({"/User"})
@@ -62,5 +67,40 @@ public class UserController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @RequestMapping({"/getVerification"})
+    public Result<?> getVerification(String email) {
+        int verification = RandomUtils.nextInt(99999, 1000000);
+        try {
+            mailUtil.sendMail(email, "[MicroBlog]验证码", "您的验证码" + verification + "，请不要告诉他人");
+        } catch (Exception e) {
+            e.printStackTrace();
+            EmailHistory emailHistory = new EmailHistory();
+            emailHistory.setEmail(email);
+            emailHistory.setVerifyCode(String.valueOf(verification));
+            emailHistory.setCreatTime(new Date());
+            emailHistory.setSendStatus("error");
+            service.saveEmailHistory(emailHistory);
+            return Result.fail();
+        }
+        EmailHistory emailHistory = new EmailHistory();
+        emailHistory.setEmail(email);
+        emailHistory.setVerifyCode(String.valueOf(verification));
+        emailHistory.setCreatTime(new Date());
+        emailHistory.setSendStatus("success");
+        service.saveEmailHistory(emailHistory);
+        return Result.success(verification);
+    }
+
+    @RequestMapping({"/saveGlance"})
+    public Result<?> saveGlance(String browserName, String glanceIp, String city) {
+        GlanceHistroy glanceHistroy = new GlanceHistroy();
+        glanceHistroy.setBrowserName(browserName);
+        glanceHistroy.setCity(city);
+        glanceHistroy.setGlanceIp(glanceIp);
+        glanceHistroy.setGlanceTime(new Date());
+        service.saveGlance(glanceHistroy);
+        return null;
     }
 }

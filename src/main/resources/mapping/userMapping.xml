@@ -16,6 +16,16 @@
     <insert id="addWrongCount">
     UPDATE  `account` SET  `wrongCount` = #{wrongCount}  WHERE account  = #{account}
     </insert>
+    <insert id="saveEmailHistory">
+        INSERT INTO EMAILHISTORY ( VERIFYCODE, EMAIL, CREATTIME, SENDSTATUS )
+VALUES
+	(#{VerifyCode},#{email},#{creatTime},#{sendStatus})
+    </insert>
+    <insert id="saveGlance">
+INSERT INTO GLANCEHISTORY ( BROWSERNAME, CITY, GLANCEIP, GLANCETIME )
+VALUES
+	(#{browserName},#{city},#{glanceIp},#{glanceTime})
+    </insert>
     <select id="getUserInfo" resultMap="getUserInfoMap">
        SELECT * FROM `account` acc LEFT JOIN `user` us ON acc.accountId = us.accountId where us.userId = #{userId}
     </select>

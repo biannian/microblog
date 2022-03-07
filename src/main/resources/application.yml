@@ -3,9 +3,9 @@ server:
 spring:
   datasource:
     name: microblog
-    url: jdbc:mysql://121.5.222.148:3306/microblog
+    url: jdbc:mysql://121.41.225.155:3306/microblog
     username: root
-    password: K1panguangke
+    password: wtl123..
     driver-class-name: com.mysql.jdbc.Driver
   servlet:
     multipart:
