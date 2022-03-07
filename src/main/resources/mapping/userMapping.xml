@@ -26,6 +26,16 @@ INSERT INTO GLANCEHISTORY ( BROWSERNAME, CITY, GLANCEIP, GLANCETIME )
 VALUES
 	(#{browserName},#{city},#{glanceIp},#{glanceTime})
     </insert>
+    <insert id="register" >
+        INSERT INTO ACCOUNT ( account, password, email )
+VALUES
+	(#{account},#{password},#{email})
+    </insert>
+    <insert id="addUser">
+        INSERT INTO User ( userName, userImgUrl, accountId )
+VALUES
+	(#{userName},#{userImgUrl},#{accountId})
+    </insert>
     <select id="getUserInfo" resultMap="getUserInfoMap">
        SELECT * FROM `account` acc LEFT JOIN `user` us ON acc.accountId = us.accountId where us.userId = #{userId}
     </select>
@@ -34,5 +44,8 @@ VALUES
     </select>
     <select id="getWrongCount" resultType="com.biannian.microblog.Entity.User">
            SELECT wrongCount,account FROM `account`  WHERE account = #{account}
+    </select>
+    <select id="queryEmail" resultType="com.biannian.microblog.Entity.Account">
+        select * from account where email = #{email}
     </select>
 </mapper>

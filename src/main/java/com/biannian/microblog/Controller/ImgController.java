@@ -1,5 +1,6 @@
 package com.biannian.microblog.Controller;
 
+import com.biannian.microblog.Model.CurrentIp;
 import com.biannian.microblog.Model.Result;
 import com.biannian.microblog.Utils.UUIDUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +18,7 @@ public class ImgController {
 
     @RequestMapping("/pictureDelete.do")
     public Result<?> pictureDelete(String path) {
-        path = path.replace("http://localhost:8083/picture/", "");
+        path = path.replace("/picture/", "");
         path = "D:/IdeaProject/Delivery/src/main/resources/static/picture/" + path;
         File file = new File(path);
         if (file.exists()) {//文件是否存在
@@ -54,7 +55,7 @@ public class ImgController {
         try {
             picture.transferTo(targetFile);
             //将文件在服务器的存储路径返回
-            return Result.success("http://localhost:8083/picture/" + fileName);
+            return Result.success("/picture/" + fileName);
         } catch (IOException e) {
             e.printStackTrace();
             return Result.fail();

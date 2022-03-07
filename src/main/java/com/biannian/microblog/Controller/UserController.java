@@ -1,9 +1,6 @@
 package com.biannian.microblog.Controller;
 
-import com.biannian.microblog.Entity.EmailHistory;
-import com.biannian.microblog.Entity.GlanceHistroy;
-import com.biannian.microblog.Entity.User;
-import com.biannian.microblog.Entity.VerifyCode;
+import com.biannian.microblog.Entity.*;
 import com.biannian.microblog.Model.Result;
 import com.biannian.microblog.Service.UserService;
 import com.biannian.microblog.Utils.IVerifyCodeGen;
@@ -71,6 +68,10 @@ public class UserController {
 
     @RequestMapping({"/getVerification"})
     public Result<?> getVerification(String email) {
+        List<Account> account = service.queryEmail(email);
+        if (account.size() > 0){
+            return Result.fail(-1,"邮箱地址已被注册");
+        }
         int verification = RandomUtils.nextInt(99999, 1000000);
         try {
             mailUtil.sendMail(email, "[MicroBlog]验证码", "您的验证码" + verification + "，请不要告诉他人");
@@ -82,7 +83,7 @@ public class UserController {
             emailHistory.setCreatTime(new Date());
             emailHistory.setSendStatus("error");
             service.saveEmailHistory(emailHistory);
-            return Result.fail();
+            return Result.fail(-1,"发送失败，请检查邮箱地址");
         }
         EmailHistory emailHistory = new EmailHistory();
         emailHistory.setEmail(email);
@@ -94,13 +95,28 @@ public class UserController {
     }
 
     @RequestMapping({"/saveGlance"})
-    public Result<?> saveGlance(String browserName, String glanceIp, String city) {
+    public void saveGlance(String browserName, String glanceIp, String city) {
         GlanceHistroy glanceHistroy = new GlanceHistroy();
         glanceHistroy.setBrowserName(browserName);
         glanceHistroy.setCity(city);
         glanceHistroy.setGlanceIp(glanceIp);
         glanceHistroy.setGlanceTime(new Date());
         service.saveGlance(glanceHistroy);
-        return null;
+    }
+
+    @RequestMapping({"/register"})
+    public Result<?> register(String email, String account, String password) {
+        Account user = new Account();
+        if (StringUtils.isEmpty(email))
+            return Result.fail(-1, "邮箱不能为空");
+        if (StringUtils.isEmpty(account))
+            return Result.fail(-1, "账户不能为空");
+        if (StringUtils.isEmpty(password))
+            return Result.fail(-1, "密码不能为空");
+        user.setAccount(account);
+        user.setEmail(email);
+        user.setPassword(password);
+        service.register(user);
+        return Result.success("注册成功！");
     }
 }

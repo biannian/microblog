@@ -1,5 +1,6 @@
 package com.biannian.microblog.Service;
 
+import com.biannian.microblog.Entity.Account;
 import com.biannian.microblog.Entity.EmailHistory;
 import com.biannian.microblog.Entity.GlanceHistroy;
 import com.biannian.microblog.Entity.User;
@@ -16,4 +17,8 @@ public interface UserService {
     void saveEmailHistory(EmailHistory emailHistory);
 
     void saveGlance(GlanceHistroy glanceHistroy);
+
+    void register(Account user);
+
+    List<Account> queryEmail(String email);
 }

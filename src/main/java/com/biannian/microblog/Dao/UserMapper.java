@@ -1,5 +1,6 @@
 package com.biannian.microblog.Dao;
 
+import com.biannian.microblog.Entity.Account;
 import com.biannian.microblog.Entity.EmailHistory;
 import com.biannian.microblog.Entity.GlanceHistroy;
 import com.biannian.microblog.Entity.User;
@@ -20,4 +21,10 @@ public interface UserMapper {
     void saveEmailHistory(EmailHistory emailHistory);
 
     void saveGlance(GlanceHistroy glanceHistroy);
+
+    void register(Account user);
+
+    void addUser(User user);
+
+    List<Account> queryEmail(String email);
 }
