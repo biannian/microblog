@@ -27,6 +27,9 @@ VALUES
 	(#{browserName},#{city},#{glanceIp},#{glanceTime})
     </insert>
     <insert id="register" >
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="accountId">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
         INSERT INTO ACCOUNT ( account, password, email )
 VALUES
 	(#{account},#{password},#{email})
