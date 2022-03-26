@@ -9,7 +9,7 @@ import java.util.List;
 
 @Mapper
 public interface BlogMapper {
-    List<BlogInfo> getBlogInfo();
+    List<BlogInfo> getBlogInfo(String userId);
 
     List<BlogInfo> getBlogDetail(String blogId);
 

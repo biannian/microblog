@@ -6,7 +6,7 @@ import com.biannian.microblog.Entity.BlogInfo;
 import java.util.List;
 
 public interface BlogService {
-    List<BlogInfo> getBlogInfo();
+    List<BlogInfo> getBlogInfo(String userId);
 
     List<BlogInfo> getBlogDetail(String blogId);
 

@@ -26,8 +26,8 @@ public class BlogController {
      * @return
      */
     @RequestMapping({"/getBlogInfo"})
-    public Result<?> getBlogInfo() {
-        return Result.success(service.getBlogInfo());
+    public Result<?> getBlogInfo(String userId) {
+        return Result.success(service.getBlogInfo(userId));
     }
 
     /**
